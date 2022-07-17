@@ -50,6 +50,7 @@ public class SingleLinkedListDemo {
                 .add(new HeroNode(7, "秦明", "霹雳火"))
                 .add(new HeroNode(8, "呼延灼", "双鞭"));
 
+        // 测试两个有序单链表合并
         singleLinkedList.list();
         System.out.println("=======================");
         singleLinkedList2.list();
