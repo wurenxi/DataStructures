@@ -37,6 +37,14 @@ public class SingleLinkedListDemo {
         // 显示一把
         System.out.println("修改后的链表情况：");
         singleLinkedList.list();
+
+        // 删除一个节点
+        // tips: 被删除的节点不会被垃圾回收，比如这里的no=1，有局部变量hero1指向，而且还是强引用
+        // 根据可达性分析算法，该节点虽被断开，程序运行期间，该节点也不会被回收
+        singleLinkedList.del(1);
+        singleLinkedList.del(4);
+        System.out.println("删除后的链表情况：");
+        singleLinkedList.list();
     }
 }
 
@@ -161,6 +169,34 @@ class SingleLinkedList {
             tmp.nickname = newHeroNode.nickname;
         }else{ // 没有找到
             System.out.printf("没有找到 编号 %d 的节点，不能修改\n", newHeroNode.no);
+        }
+    }
+
+    /**
+     * 删除节点
+     * 思路
+     * 1.head不能动，因此我们需要一个tmp辅助节点找到待删除节点的前一个节点
+     * 2.说明我们在比较时，是tmp.next.no和需要修改的节点的no比较
+     */
+    public void del(int no) {
+        HeroNode tmp = head;
+        boolean flag = false; // 标志是否找到待删除节点的
+        while (tmp.next != null) {
+            if(tmp.next.no == no) {
+                // 找到待删除节点的前一个节点tmp
+                flag = true;
+                break;
+            }
+
+            tmp = tmp.next; // tmp后移，遍历
+        }
+
+        // 判断flag
+        if(flag) { // 找到
+            // 可以删除
+            tmp.next = tmp.next.next;
+        }else{
+            System.out.printf("要删除的 %d 节点不存在", no);
         }
     }
 }
