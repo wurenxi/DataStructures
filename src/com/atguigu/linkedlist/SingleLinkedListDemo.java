@@ -355,14 +355,14 @@ class SingleLinkedList {
 
         HeroNode needInsertNode = otherLinkedList.head.next;
         HeroNode tmp = needInsertNode.next;
-
+        boolean flag = false;
         while (true) {
 
             HeroNode cur = head;
             while (true) {
-                if(cur.next == null) {
+                if(cur.next == null) { // 当进入该判断时，说明，插入节点no比现单链表所有节点no都要大，那么之后还关联的节点（肯定越来越大），无须再进行while判断，直接拼接到现单链表尾部
                     cur.next = needInsertNode;
-                    needInsertNode.next = null; // 重要，如果插入节点next还有节点，在下次循环中，将会在插入节点连接的最后一个节点后面再插入，会出现重复的异常
+                    flag = true;
                     break;
                 }
 
@@ -375,6 +375,10 @@ class SingleLinkedList {
                 }
 
                 cur = cur.next;
+            }
+
+            if(flag) {
+                break;
             }
 
             needInsertNode = tmp;
