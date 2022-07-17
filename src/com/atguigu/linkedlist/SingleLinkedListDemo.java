@@ -362,6 +362,7 @@ class SingleLinkedList {
             while (true) {
                 if(cur.next == null) {
                     cur.next = needInsertNode;
+                    needInsertNode.next = null; // 重要，如果插入节点next还有节点，在下次循环中，将会在插入节点连接的最后一个节点后面再插入，会出现重复的异常
                     break;
                 }
 
@@ -377,11 +378,11 @@ class SingleLinkedList {
             }
 
             needInsertNode = tmp;
-            tmp = tmp.next;
-
-            if(tmp == null) {
+            if(needInsertNode == null) {
                 break;
             }
+
+            tmp = tmp.next;
         }
     }
 
