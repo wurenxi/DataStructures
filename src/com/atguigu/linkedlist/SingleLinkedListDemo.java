@@ -1,5 +1,7 @@
 package com.atguigu.linkedlist;
 
+import java.util.Stack;
+
 /**
  * @author gxl
  * @description
@@ -11,40 +13,72 @@ public class SingleLinkedListDemo {
         // 先创建节点
         HeroNode hero1 = new HeroNode(1, "宋江", "及时雨");
         HeroNode hero2 = new HeroNode(2, "卢俊义", "玉麒麟");
-        HeroNode hero3 = new HeroNode(3, "吴用", "智多星");
+        HeroNode hero3 = new HeroNode(6, "林冲", "豹子头");
         HeroNode hero4 = new HeroNode(4, "公孙胜", "入云龙");
 
         // 创建一个链表
         SingleLinkedList singleLinkedList = new SingleLinkedList();
+        SingleLinkedList singleLinkedList2 = new SingleLinkedList();
+
+
 //        singleLinkedList
 //                .add(hero1)
 //                .add(hero4)
 //                .add(hero2)
 //                .add(hero3);
+//
+//        // 测试一下单链表的反转功能
+//        System.out.println("原来链表的情况：");
+//        singleLinkedList.list();
+////        singleLinkedList.reverseList();
+////        System.out.println("反转单链表：");
+////        singleLinkedList.list();
+//
+//        // 测试逆序打印单链表
+//        System.out.println("测试逆序打印单链表(没有改变原来链表):");
+//        singleLinkedList.reversePrint();
 
         singleLinkedList
-                .addByOrder(hero1)
                 .addByOrder(hero4)
+                .addByOrder(hero1)
                 .addByOrder(hero2)
                 .addByOrder(hero3);
 
-        singleLinkedList.list();
+        singleLinkedList2
+                .add(new HeroNode(3, "吴用", "智多星"))
+                .add(new HeroNode(5, "关胜", "大刀"))
+                .add(new HeroNode(7, "秦明", "霹雳火"))
+                .add(new HeroNode(8, "呼延灼", "双鞭"));
 
-        // 测试修改节点的代码
-        HeroNode newHeroNode = new HeroNode(2, "小卢", "玉麒麟~~");
-        singleLinkedList.update(newHeroNode);
-
-        // 显示一把
-        System.out.println("修改后的链表情况：");
         singleLinkedList.list();
-
-        // 删除一个节点
-        // tips: 被删除的节点不会被垃圾回收，比如这里的no=1，有局部变量hero1指向，而且还是强引用
-        // 根据可达性分析算法，该节点虽被断开，程序运行期间，该节点也不会被回收
-        singleLinkedList.del(1);
-        singleLinkedList.del(4);
-        System.out.println("删除后的链表情况：");
+        System.out.println("=======================");
+        singleLinkedList2.list();
+        System.out.println("-----------------------");
+        singleLinkedList.combineOtherLinkedList(singleLinkedList2);
         singleLinkedList.list();
+//
+//        // 测试修改节点的代码
+//        HeroNode newHeroNode = new HeroNode(2, "小卢", "玉麒麟~~");
+//        singleLinkedList.update(newHeroNode);
+//
+//        // 显示一把
+//        System.out.println("修改后的链表情况：");
+//        singleLinkedList.list();
+//
+//        // 删除一个节点
+//        // tips: 被删除的节点不会被垃圾回收，比如这里的no=1，有局部变量hero1指向，而且还是强引用
+//        // 根据可达性分析算法，该节点虽被断开，程序运行期间，该节点也不会被回收
+//        singleLinkedList.del(1);
+//        singleLinkedList.del(4);
+//        System.out.println("删除后的链表情况：");
+//        singleLinkedList.list();
+//
+//        // 测试单链表中有效节点的个数
+//        System.out.println("有效的节点个数："+singleLinkedList.getLength()); // 2
+//
+//        // 测试是否得到了倒数第K个节点
+//        HeroNode res = singleLinkedList.findLastIndexNode(1);
+//        System.out.println("res=" + res);
     }
 }
 
@@ -54,6 +88,10 @@ public class SingleLinkedListDemo {
 class SingleLinkedList {
     // 先初始化一个头节点，头节点不用动，不存放具体的数据
     private HeroNode head = new HeroNode(0, "", "");
+
+    public HeroNode getHead() {
+        return head;
+    }
 
     // 添加节点到单向链表
     // 思路：当不考虑编号的顺序时
@@ -199,6 +237,153 @@ class SingleLinkedList {
             System.out.printf("要删除的 %d 节点不存在", no);
         }
     }
+
+    /**
+     * 方法：获取到单链表的节点的个数（如果是带头节点的链表，需求不统计头节点）
+     * head 链表的头节点
+     * @return 返回的就是有效节点的个数
+     */
+    public int getLength() {
+        if(head.next == null) { // 空链表
+            return 0;
+        }
+
+        int length = 0;
+        // 定义一个辅助的变量，这里没有统计头节点
+        HeroNode cur = head.next;
+        while (cur != null) {
+            length++;
+            cur = cur.next;
+        }
+
+        return length;
+    }
+
+    /**
+     * 查找单链表中的倒数第k个节点【新浪面试题】
+     * 思路：
+     * 1.编写一个方法，接收一个index
+     * 2.index 表示是倒数第index个节点
+     * 3.先把链表从头到尾遍历一遍，得到链表的总的长度 getLength
+     * 4.得到size后，我们从链表的第一个开始遍历（size-index）个，就可以得到
+     * 5.如果找到了，返回该节点，否则返回空
+     */
+    public HeroNode findLastIndexNode(int index) {
+        // 判断如果链表为空，返回null
+        if(head.next == null) {
+            return null;
+        }
+
+        // 第一次遍历得到链表的长度（节点个数）
+        int size = getLength();
+        // 第二次遍历 size-index 位置，就是我们倒数的第K个节点
+        // 先做一个index的校验
+        if(index <= 0 || index > size) {
+            return null;
+        }
+
+        // 定义辅助变量，for循环定位到倒数的index
+        HeroNode cur = head.next;
+        for (int i = 0; i < size - index; i++) {
+            cur = cur.next;
+        }
+
+        return cur;
+    }
+
+    /**
+     * 将单链表反转
+     */
+    public void reverseList() {
+        // 如果当前链表为空，或只有一个节点，无需反转，直接返回
+        if(head.next == null || head.next.next == null) {
+            return;
+        }
+
+        // 定义一个辅助的指针（变量），帮助我们遍历原来的链表
+        HeroNode cur = head.next;
+        HeroNode next = null; // 指向当前节点[cur]的下一个节点
+        HeroNode reverseHead = new HeroNode(0, "", "");
+        // 遍历原来的链表，并每遍历一个节点，将其取出，并放在新的链表reverseHead的最前端
+        while (cur != null) {
+            next = cur.next; // 先暂时保存当前节点的下一个节点，因为后面需要使用
+            cur.next = reverseHead.next; // 将cur的一下个节点指向新的链表的最前端
+            reverseHead.next = cur; // 将cur 连接到新的链表上
+            cur = next; // 让 cur 后移
+        }
+        // 将head.next 指向 reverseHead.next，实现单链表的反转
+        head.next = reverseHead.next;
+    }
+
+    /**
+     * 利用栈这个数据结构，将各个节点压入到栈中，然后利用栈的先进后出的特点，实现逆序打印的效果
+     */
+    public void reversePrint() {
+        if(head.next == null) {
+            return; // 空链表，无法打印
+        }
+
+        // 创建要给一个栈，将各个节点压入栈
+        Stack<HeroNode> stack = new Stack<>();
+        HeroNode cur = head.next;
+        // 将链表中所有节点压入栈
+        while (cur != null) {
+            stack.push(cur);
+            cur = cur.next; // cur后移，这样就可以压入下一个节点
+        }
+        // 将栈中节点进行打印，pop出栈
+        while (stack.size() > 0) {
+            System.out.println(stack.pop()); // stack的特点是先进后出
+        }
+    }
+
+    /**
+     * 合并两个有序的单链表，合并之后的链表仍然有序
+     */
+    public void combineOtherLinkedList(SingleLinkedList otherLinkedList) {
+        if(head.next == null && otherLinkedList.head.next == null) {
+            throw new RuntimeException("请提供任意一个非空单链表");
+        }
+        if(head.next == null) {
+            head = otherLinkedList.head;
+            return;
+        }
+        if(otherLinkedList.head.next == null) {
+            return;
+        }
+
+        HeroNode needInsertNode = otherLinkedList.head.next;
+        HeroNode tmp = needInsertNode.next;
+
+        while (true) {
+
+            HeroNode cur = head;
+            while (true) {
+                if(cur.next == null) {
+                    cur.next = needInsertNode;
+                    break;
+                }
+
+                if(cur.next.no > needInsertNode.no) {
+                    needInsertNode.next = cur.next;
+                    cur.next = needInsertNode;
+                    break;
+                }else if(cur.next.no == needInsertNode.no) {
+                    throw new RuntimeException("插入ID重复，插入失败");
+                }
+
+                cur = cur.next;
+            }
+
+            needInsertNode = tmp;
+            tmp = tmp.next;
+
+            if(tmp == null) {
+                break;
+            }
+        }
+    }
+
 }
 
 /**
