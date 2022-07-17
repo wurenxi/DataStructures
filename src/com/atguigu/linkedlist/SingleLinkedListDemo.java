@@ -16,11 +16,17 @@ public class SingleLinkedListDemo {
 
         // 创建一个链表
         SingleLinkedList singleLinkedList = new SingleLinkedList();
+//        singleLinkedList
+//                .add(hero1)
+//                .add(hero4)
+//                .add(hero2)
+//                .add(hero3);
+
         singleLinkedList
-                .add(hero1)
-                .add(hero4)
-                .add(hero2)
-                .add(hero3);
+                .addByOrder(hero1)
+                .addByOrder(hero4)
+                .addByOrder(hero2)
+                .addByOrder(hero3);
 
         // 显示一把
         singleLinkedList.list();
@@ -45,7 +51,6 @@ class SingleLinkedList {
         while (true) {
             // 找到链表的最后
             if(tmp.next == null) {
-
                 break;
             }
 
@@ -56,6 +61,40 @@ class SingleLinkedList {
         // 当退出while循环时，tmp指向了链表的最后
         // 将最后这个节点的next指向新的节点
         tmp.next = heroNode;
+
+        return this;
+    }
+
+    // 第二种方法在添加英雄时，根据排名将英雄插入到指定位置
+    // 如果有这个排名，则添加失败，并给出提示
+    public SingleLinkedList addByOrder(HeroNode heroNode) {
+        // 因为头节点不能动，因此我们仍然通过一个辅助指针（变量）来帮助找到添加的位置
+        // 因为单链表，所以我们找的tmp是位于添加位置的前一个节点，否则插入不了
+        HeroNode tmp = head;
+        boolean flag = false; // flag标志添加的编号是否存在，默认为false
+        while (true) {
+            if(tmp.next == null) { // 说明tmp已经在链表的最后
+                break;
+            }
+
+            if(tmp.next.no > heroNode.no) { // 位置找到了，就在tmp的后面插入
+                break;
+            }else if(tmp.next.no == heroNode.no) { // 说明希望添加的heroNode的编号已经存在
+                flag = true; // 说明编号存在
+                break;
+            }
+
+            tmp = tmp.next; // 后移，遍历当前链表
+        }
+
+        // 判断flag的值
+        if(flag) { // 不能添加，说明编号存在
+            System.out.printf("准备插入的英雄的编号 %d 已经存在了，不能加入\n", heroNode.no);
+        }else{
+            // 插入到链表中, tmp的后面
+            heroNode.next = tmp.next;
+            tmp.next = heroNode;
+        }
 
         return this;
     }
