@@ -56,7 +56,6 @@ public class Queue8 {
             // 同一列 同一斜线
             // 2.Math.abs(n-i) == Math.abs(array[n] - array[i]) 判断
             // 3.判断是否在同一行，没必要判断
-            // TODO 高数！！！！
             if(array[i] == array[n] || Math.abs(n-i) == Math.abs(array[n] - array[i])) {
                 return false;
             }
