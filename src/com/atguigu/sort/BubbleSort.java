@@ -23,7 +23,7 @@ public class BubbleSort {
         // 测试冒泡排序花费时间
         bubbleSort(arr);
         long endTime = System.currentTimeMillis();
-        System.out.println("---costTime: "+(endTime - startTime)+" 毫秒");
+        System.out.println("---costTime: "+(endTime - startTime)+" 毫秒"); // 11051 毫秒
     }
 
     // 将冒泡排序算法，封装成一个方法
