@@ -31,10 +31,13 @@ public class InsertSort {
      * @param arr
      */
     public static void insertSort(int[] arr) {
+
+        int insertVal;
+        int insertIndex;
         for (int i = 1; i < arr.length; i++) {
             // 定义待插入的数
-            int insertVal = arr[i];
-            int insertIndex = i - 1; // 即arr[i]的前面这个数的下标
+            insertVal = arr[i];
+            insertIndex = i - 1; // 即arr[i]的前面这个数的下标
 
             // 给insertVal找到插入的位置
             // 说明
