@@ -12,7 +12,7 @@ public class ShellSort {
 //        int[] arr = {8, 9, 1, 7, 2, 3, 5, 4, 6, 0};
 
         // 创建要给8w个随机的数组
-        int[] arr = new int[8];
+        int[] arr = new int[80000];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int)(Math.random() * 8000000); // 生成一个[0, 8000000) 数
         }
@@ -23,7 +23,7 @@ public class ShellSort {
         long endTime = System.currentTimeMillis();
         System.out.println("---costTime: "+(endTime - startTime)+" 毫秒");
 
-        System.out.println(Arrays.toString(arr));
+//        System.out.println(Arrays.toString(arr));
 
     }
 
