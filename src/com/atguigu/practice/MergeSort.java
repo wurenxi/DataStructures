@@ -14,6 +14,7 @@ public class MergeSort {
             arr[i] = (int)(Math.random() * 8000000); // 生成一个[0, 8000000) 数
         }
 
+        int[] tmp = new int[arr.length];
 
         System.out.println(Arrays.toString(arr));
     }
