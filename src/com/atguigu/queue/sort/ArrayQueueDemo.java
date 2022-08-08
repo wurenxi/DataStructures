@@ -1,17 +1,16 @@
-package com.atguigu.queue;
+package com.atguigu.queue.sort;
 
 import java.util.Scanner;
 
 /**
  * @author gxl
  * @description
- * @createDate 2022/7/16 11:31
+ * @createDate 2022/7/16 9:50
  */
-public class CircleArrayQueueNotWasteSpace {
+public class ArrayQueueDemo {
     public static void main(String[] args) {
-        System.out.println("测试数组模拟不浪费空间的环形队列的案例");
-        // 创建一个环形队列
-        CircleArrayNotWasteSpace queue = new CircleArrayNotWasteSpace(4); // 设置4，其队列的最大有效数字为3
+        // 创建一个队列
+        ArrayQueue queue = new ArrayQueue(3);
         char key = ' '; // 接收用户输入
         Scanner scanner = new Scanner(System.in);
         boolean loop = true;
@@ -61,7 +60,8 @@ public class CircleArrayQueueNotWasteSpace {
     }
 }
 
-class CircleArrayNotWasteSpace {
+// 使用数组模拟队列 —— 编写一个 ArrayQueue类
+class ArrayQueue {
 
     private int maxSize; // 表示数组的最大容量
 
@@ -69,23 +69,24 @@ class CircleArrayNotWasteSpace {
 
     private int rear; // 队列尾
 
-    private int flag; // 指向rear指针的前一个位置，即刚添加的数据
-
     private int[] arr; // 该数组用于存放数据，模拟队列
 
-    public CircleArrayNotWasteSpace(int arrMaxSize) {
+    // 创建队列的构造器
+    public ArrayQueue(int arrMaxSize) {
         maxSize = arrMaxSize;
         arr = new int[maxSize];
+        front = -1; // 指向队列头部，分析出front是指向队列头的前一个位置
+        rear = -1;  // 指向队列尾，指向队列尾的数据（即就是队列最后一个数据）
     }
 
     // 判断队列是否满
     public boolean isFull() {
-        return rear == front && flag != rear;
+        return rear == maxSize-1;
     }
 
     // 判断队列是否为空
     public boolean isEmpty() {
-        return rear == front && rear == flag;
+        return rear == front;
     }
 
     // 添加数据到队列
@@ -96,11 +97,8 @@ class CircleArrayNotWasteSpace {
             return;
         }
 
-        // 直接将数据加入
+        rear++; // 让rear后移
         arr[rear] = n;
-        // 将rear后移，这里必须考虑取模
-        flag = rear;
-        rear = (rear + 1) % maxSize;
     }
 
     // 获取队列的数据，数据出队列
@@ -111,20 +109,11 @@ class CircleArrayNotWasteSpace {
             throw new RuntimeException("队列空，不能取数据");
         }
 
-        // 这里需要分析出 front是指向队列的第一个元素
-        // 1.先把front 对应的值保存到一个临时变量
-        // 2.将front后移
-        // 3.将临时保存的变量返回
-        int value = arr[front];
-        if(front == flag) { // 取到最后一个值了，最终front==flag==rear
-            front = (front + 1) % maxSize;
-            flag = (flag + 1) % maxSize;
-        }else{
-            front = (front + 1) % maxSize;
-        }
-        return value;
+        front++; // front后移
+        return arr[front];
     }
 
+    // 显示队列的所有数据
     public void showQueue() {
         // 遍历
         if(isEmpty()) {
@@ -132,26 +121,18 @@ class CircleArrayNotWasteSpace {
             return;
         }
 
-        // 思路：从front开始遍历，遍历多少个元素
-        for (int i = front; i < front + size(); i++) {
-            System.out.printf("arr[%d]=%d\n", i % maxSize, arr[i % maxSize]);
+        for (int i = 0; i < arr.length; i++) {
+            System.out.printf("arr[%d]=%d\n", i, arr[i]);
         }
     }
 
-    public int size() {
-        if((flag+1)%maxSize == front) {
-            return maxSize;
-        }else {
-            return (flag + maxSize - front + 1) % maxSize;
-        }
-    }
-
+    // 显示队列的头数据，注意：不是取出数据
     public int headQueue() {
         // 判断
         if(isEmpty()) {
             throw new RuntimeException("队列空的，没有数据");
         }
 
-        return arr[front];
+        return arr[front+1];
     }
 }
