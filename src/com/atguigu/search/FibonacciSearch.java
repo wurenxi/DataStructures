@@ -14,7 +14,7 @@ public class FibonacciSearch {
     public static void main(String[] args) {
         int[] arr = {1, 8, 10, 89, 1000, 1234};
 
-        System.out.println("index = " + fibSearch(arr, 1001));
+        System.out.println("index = " + fibSearch(arr, 1234));
     }
 
     // mid = low + F(K-1) - 1，需要使用到斐波拉契数列
@@ -77,7 +77,7 @@ public class FibonacciSearch {
                 // 说明
                 // 1.全部元素 = 前面元素 + 后面元素
                 // 2.f[k] = f[k-1] + f[k-2]
-                // 3.因为后面我们有f[k-2]，所以可以继续拆分f[k-1] = f[k-3] + f[k-4]
+                // 3.因为后面我们有f[k-2]，所以可以继续拆分f[k-2] = f[k-3] + f[k-4]
                 // 4.即在f[k-2]的前面继续查找 k -= 2
                 // 5.即下次循环 mid = f[k - 1 - 2] - 1
                 k -= 2;
