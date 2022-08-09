@@ -1,6 +1,5 @@
-package com.atguigu.queue.search;
+package com.atguigu.practice.search;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

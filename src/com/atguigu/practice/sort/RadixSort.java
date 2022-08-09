@@ -1,4 +1,4 @@
-package com.atguigu.practice;
+package com.atguigu.practice.sort;
 
 import java.util.Arrays;
 
