@@ -14,7 +14,7 @@ public class FibonacciSearch {
     public static void main(String[] args) {
         int[] arr = {1, 8, 10, 89, 1000, 1234};
 
-        System.out.println("index = " + fibSearch(arr, 1234));
+        System.out.println("index = " + fibSearch(arr, 8));
     }
 
     // mid = low + F(K-1) - 1，需要使用到斐波拉契数列
@@ -50,7 +50,7 @@ public class FibonacciSearch {
         }
         // 因为f[k]值可能大于数组a的长度，因此我们需要使用Arrays类，构造一个新的数组，并指向tmp
         // 不足的部分会使用0填充
-        int[] tmp = Arrays.copyOf(a, f[k]);
+        int[] tmp = Arrays.copyOf(a, f[k] - 1);
         // 实际上需要使用a数组的最后的数填充tmp
         // 举例：
         // tmp = {1, 8, 10, 89, 1000, 1234, 0, 0} => {1, 8, 10, 89, 1000, 1234, 1234, 1234};
