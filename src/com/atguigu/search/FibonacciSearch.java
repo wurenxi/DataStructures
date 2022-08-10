@@ -48,7 +48,7 @@ public class FibonacciSearch {
         while (high > f[k] - 1) {
             k++;
         }
-        // 因为f[k]值可能大于数组a的长度，因此我们需要使用Arrays类，构造一个新的数组，并指向tmp
+        // 因为f[k] - 1值可能大于数组a的长度，因此我们需要使用Arrays类，构造一个新的数组，并指向tmp
         // 不足的部分会使用0填充
         int[] tmp = Arrays.copyOf(a, f[k] - 1);
         // 实际上需要使用a数组的最后的数填充tmp
