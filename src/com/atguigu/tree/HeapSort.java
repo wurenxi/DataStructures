@@ -40,7 +40,8 @@ public class HeapSort {
 //        System.out.println("第二次" + Arrays.toString(arr)); // {9, 6, 8, 5, 4}
 
         // 最终代码
-        // 将无需序列构建成一个堆，根据升序降序需求选择大顶堆或小顶堆
+        // 将无序序列构建成一个堆，根据升序降序需求选择大顶堆或小顶堆
+        // GaoFy: 从右向左，从低至上，一步一步将局部大顶堆达到全局大顶堆
         for (int i = arr.length / 2 - 1; i >= 0 ; i--) {
             adjustHeap(arr, i, arr.length);
         }
@@ -54,6 +55,7 @@ public class HeapSort {
             tmp = arr[j];
             arr[j] = arr[0];
             arr[0] = tmp;
+            // GaoFy: 除了根节点外，左右子树都是大顶堆
             adjustHeap(arr, 0, j);
         }
     }
