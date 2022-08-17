@@ -28,16 +28,16 @@ public class ThreadBinaryTreeDemo {
 
         ThreadedBinaryTree threadedBinaryTree = new ThreadedBinaryTree();
         threadedBinaryTree.setRoot(root);
-        threadedBinaryTree.threadedNodes();
+//        threadedBinaryTree.threadedNodes();
         // 前序线索化二叉树
 //        threadedBinaryTree.preThreadedNodes();
         // 后续线索化二叉树
-//        threadedBinaryTree.postThreadedNodes();
+        threadedBinaryTree.postThreadedNodes();
 
         // 测试线索化，以10号节点测试
-        HeroNode leftNode = node5.getLeft();
-        System.out.println("10号节点的前驱节点是 = " + leftNode);
-        System.out.println("10号节点的后继节点是 = " + node5.getRight());
+//        HeroNode leftNode = node5.getLeft();
+//        System.out.println("10号节点的前驱节点是 = " + leftNode);
+//        System.out.println("10号节点的后继节点是 = " + node5.getRight());
 
         // 测试前序线索化，以8号节点测试
 //        HeroNode leftNode = node4.getLeft();
@@ -45,16 +45,16 @@ public class ThreadBinaryTreeDemo {
 //        System.out.println("8号节点的后继节点是 = " + node4.getRight());
 
         // 测试后续线索化，以10号节点测试
-//        HeroNode leftNode = node5.getLeft();
-//        System.out.println("10号节点的前驱节点是 = " + leftNode);
-//        System.out.println("10号节点的后继节点是 = " + node5.getRight());
+        HeroNode leftNode = node5.getLeft();
+        System.out.println("10号节点的前驱节点是 = " + leftNode);
+        System.out.println("10号节点的后继节点是 = " + node5.getRight());
 
 //        System.out.println("使用线索化的方式遍历 线索化二叉树");
 //        threadedBinaryTree.threadedList();
 //        System.out.println("使用线索化的前序遍历 线索化二叉树");
 //        threadedBinaryTree.preThreadedList();
-//        System.out.println("使用线索化的后序遍历 线索化二叉树");
-//        threadedBinaryTree.postThreadedList();
+        System.out.println("使用线索化的后序遍历 线索化二叉树");
+        threadedBinaryTree.postThreadedList();
     }
 }
 
@@ -141,7 +141,7 @@ class ThreadedBinaryTree {
         }
     }
 
-    // 前序遍历线索化二叉树的方法
+    // 后序遍历线索化二叉树的方法
     public void postThreadedList() {
         // 定义一个变量，存储当前遍历的节点，从root开始
         HeroNode node = root;
@@ -155,18 +155,26 @@ class ThreadedBinaryTree {
 
             // 如果当前节点的右指针指向的是后继节点，就一直输出
             while (node.getRightType() == 1) {
-                // 获取到当前节点的后继节点
                 System.out.println(node);
                 pre = node;
                 node = node.getRight();
             }
 
-            while (node != null && node.getRight() == pre) {
+            // 优化
+            if(node == root) {
+                System.out.println(node);
+                break;
+            }
+
+            // 下面两步，如果当前节点的子节点都遍历过了，该到兄弟节点进行遍历
+            // node != null。当node遍历到根节点时，根节点的父节点为null，getRight()方法会报空指针异常
+            // 有了以上优化，判空可以没有
+            while (/*node != null && */node.getRight() == pre) {
                 System.out.println(node);
                 pre = node;
                 node = node.getParent();
             }
-            if (node != null && node.getRightType() == 0) {
+            if (/*node != null && */node.getRightType() == 0) {
                 node = node.getRight();
             }
         }
