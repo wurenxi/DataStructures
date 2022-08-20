@@ -21,7 +21,7 @@ public class HuffmanCode {
         assert huffmanCodesBytes != null;
         System.out.println("长度为" + huffmanCodesBytes.length);
 
-        // TODO 如何将数据进行解压（解码）
+        // 将数据进行解压（解码）
 //        System.out.println(byteToBitString(false, (byte) -88));
         byte[] sourceBytes = decode(huffmanCodes, huffmanCodesBytes, huffmanBinaryCodesLength);
         System.out.println("原来的字符串 = " + new String(sourceBytes));
